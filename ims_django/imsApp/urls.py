@@ -22,6 +22,9 @@ urlpatterns = [
     path('delete_category',views.delete_category,name='delete-category'),
     path('product',views.product_mgt,name='product-page'),
     path('manage_product',views.manage_product,name='manage-product'),
+    path('manage_product_import',views.manage_product_import,name='manage-product-import'),
+	path('import_data_to_db',views.import_data_to_db,name='import-data-to-db'),
+	
     path('save_product',views.save_product,name='save-product'),
     path('manage_product/<int:pk>',views.manage_product,name='manage-product-pk'),
     path('delete_product',views.delete_product,name='delete-product'),

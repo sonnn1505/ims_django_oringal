@@ -1,0 +1,61 @@
+Change the working directory to the extracted source code folder. i.e. cd \django_ims
+
+Run the following commands:
+    pip install Django
+    pip install -r requirements.txt
+    python manage.py migrate
+    python manage.py runserver
+
+Open a web browser and browse http://localhost:8000/ or http://127.0.0.1:8000/
+
+SuperUser
+Username: admin
+Password: admin123
+
+==================== FEATURES========================
+Login and Registration Page
+    Home/Dashboard Page
+    Displays the summary
+Categories
+    Add New Category
+    List All Categories
+    Update Category Details
+    Delete Category Details
+Product
+    Add New Product
+    List All Products
+    Update Product Details
+    Delete Product Details
+Inventory
+    List All Products
+    View Products Stock History
+    Add New Product Stock
+    Update Product Stock
+    Delete Product Stock
+Sales Transaction
+Invoices
+    List All Invoices
+    Delete Invoice Details
+Profile
+    Update Profile Details
+    Update Account Password
+Logout
+
+=================== DATABASE=========================================
+sudo -u postgres psql
+CREATE DATABASE ims;
+CREATE USER admin WITH PASSWORD 'sa';
+
+ALTER ROLE admin SET client_encoding TO 'utf8';
+ALTER ROLE admin SET default_transaction_isolation TO 'read committed';
+ALTER ROLE admin SET timezone TO 'UTC';
+
+
+GRANT ALL PRIVILEGES ON DATABASE ims TO admin;
+
+===============================================
+create new model:
+    python manage.py makemigrations
+
+To apply the changes to the database, you execute the migrate command:
+    python manage.py migrate 

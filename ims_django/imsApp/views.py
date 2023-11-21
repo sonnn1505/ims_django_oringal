@@ -9,10 +9,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from imsApp.forms import SaveStock, UserRegistration, UpdateProfile, UpdatePasswords, SaveCategory, SaveProduct, SaveInvoice, SaveInvoiceItem
-from imsApp.models import Category, Product, Stock, Invoice, Invoice_Item
+from imsApp.models import *
 from cryptography.fernet import Fernet
 from django.conf import settings
 import base64
+import openpyxl
+import pandas as pd
 
 context = {
     'page_title' : 'File Management System',
@@ -225,6 +227,29 @@ def manage_product(request, pk=None):
     return render(request, 'manage_product.html', context)
 
 @login_required
+def manage_product_import(request):
+    context['page_title'] = "Manage Product Import"
+    return render(request, 'manage_product_import.html', context)
+
+@login_required
+def import_data_to_db(request):
+    data_to_display = None
+    if request.method == 'POST':
+        file = request.FILES['files']
+        # obj = ExcelFile.objects.create(
+        #     file = file
+        # )
+ 
+        path = file.file
+ 
+         
+        df = pd.read_excel(path)
+ 
+        data_to_display = df.to_html()
+ 
+    return render(request, 'manage_product_import.html', {'data_to_display': data_to_display})
+   
+@login_required
 def delete_product(request):
     resp = {'status':'failed', 'msg':''}
 
@@ -413,4 +438,3 @@ def delete_invoice(request):
         resp['msg'] = 'Invoice has failed to delete'
     
     return HttpResponse(json.dumps(resp), content_type="application/json")
-    

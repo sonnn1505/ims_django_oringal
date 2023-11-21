@@ -103,3 +103,6 @@ def delete_stock(sender, instance, **kwargs):
         stock = Stock.objects.get(id=instance.stock.id).delete()
     except:
         return instance.stock.id
+
+class ExcelFile(models.Model):
+    file = models.FileField(upload_to="excel") 

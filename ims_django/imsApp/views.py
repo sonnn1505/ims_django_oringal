@@ -244,6 +244,10 @@ def import_data_to_db(request):
  
          
         df = pd.read_excel(path)
+        # for index, row in df.iterrows():
+        #     model = Product()
+        #     model.field_1 = row['field_1']
+        #     model.save()
  
         data_to_display = df.to_html()
  

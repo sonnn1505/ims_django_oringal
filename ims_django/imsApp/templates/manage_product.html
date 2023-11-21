@@ -1,0 +1,121 @@
+{% load customfilter %}
+<div class="container-fluid">
+    <form action=" " id="product-form">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ product.id }}">
+        <div class="form-group mb-3 ">
+            <label for="category" class="control-label">Category</label>
+            <select class="form-select d-md-inline" id="category" name="category">
+                {% for cat in category_list %}
+                    {% if product.category.id == cat.id %}
+                        <option value="{{cat.id}}" selected> {{cat.name}}</option>
+                    {% else %}
+                        <option value="{{cat.id}}"> {{cat.name}}</option>
+                    {% endif %}
+                    
+                {% endfor %}                            
+            </select>
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="part_number" class="control-label">Part number</label>
+            <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.part_number }}" >
+             <input type="hidden" id="picture" name="picture" value="{{product.part_number}}.JPG">
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="drawing_no" class="control-label">Drawing no</label>
+            <input type="text" class="form-control rounded-0" id="drawing_no" name="drawing_no" value="{{ product.drawing_no }}" >
+        </div>
+        <div class="form-group mb-3">
+            <label for="description" class="control-label">Description</label>
+            <textarea class="form-control rounded-0" name="description" id="description" rows="5" >{{ product.description }}</textarea>
+        </div>
+        <div class="form-group mb-3">
+            <label for="material" class="control-label">Material</label>
+            <textarea class="form-control rounded-0" name="material" id="material" rows="5" >{{ product.material }}</textarea>
+        </div>
+        <div class="form-group mb-3">
+            <label for="material_2" class="control-label">Material 2</label>
+            <textarea class="form-control rounded-0" name="material_2" id="material_2" rows="5" >{{ product.material_2 }}</textarea>
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="price" class="control-label">Price</label>
+            <input type="number" step="any" class="form-control rounded-0 text-end" id="price" name="price" value="{{ product.price }}" >
+        </div>
+        <div class="form-group mb-3">
+            <label for="comment" class="control-label">Comment</label>
+            <textarea class="form-control rounded-0" name="comment" id="comment" rows="5" >{{ product.comment }}</textarea>
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="packaging_length" class="control-label">Packaging_length</label>
+            <input type="number" step="any" class="form-control rounded-0 text-end" id="packaging_length" name="packaging_length" value="{{ product.packaging_length }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="packaging_wide" class="control-label">Packaging_wide</label>
+            <input type="number" step="any" class="form-control rounded-0 text-end" id="packaging_wide" name="packaging_wide" value="{{ product.packaging_wide }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="welment_profile_length" class="control-label">Welment_profile_length</label>
+            <input type="number" step="any" class="form-control rounded-0 text-end" id="welment_profile_length" name="welment_profile_length" value="{{ product.welment_profile_length }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="volume" class="control-label">Volume</label>
+            <input type="number" step="any" class="form-control rounded-0 text-end" id="volume" name="volume" value="{{ product.volume }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="surface_area" class="control-label">Surface_area</label>
+            <input type="number" step="any" class="form-control rounded-0 text-end" id="surface_area" name="surface_area" value="{{ product.surface_area }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="weight" class="control-label">Weight</label>
+            <input type="weight" step="any" class="form-control rounded-0 text-end" id="weight" name="weight" value="{{ product.weight }}" >
+        </div>
+    </form>
+</div>
+<script>
+    $(function() {
+        $('#product-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this)
+            $('.err-msg').remove();
+            var el = $('<div>')
+            el.addClass("alert alert-danger err-msg")
+            el.hide()
+            if (_this[0].checkValidity() == false) {
+                _this[0].reportValidity();
+                return false;
+            }
+            start_loader();
+            $.ajax({
+                url: "{% url 'save-product' %}",
+                data: new FormData($(this)[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: err => {
+                    console.log(err)
+                    alert("An error occured ", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (typeof resp == 'object' && resp.status == 'success') {
+                        el.removeClass("alert alert-danger err-msg ")
+                        location.reload()
+                    } else if (resp.status == 'failed' && !!resp.msg) {
+                        el.html(resp.msg)
+                    } else {
+                        el.text("An error occured ", 'error');
+                        end_loader();
+                        console.err(resp)
+                    }
+                    _this.prepend(el)
+                    el.show('slow')
+                    $("html, body, .modal ").scrollTop(0);
+                    end_loader()
+                }
+            })
+        })
+    })
+</script>

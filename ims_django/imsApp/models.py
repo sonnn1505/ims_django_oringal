@@ -37,7 +37,7 @@ class Product(models.Model):
     volume = models.FloatField(blank=True, null=True)
     surface_area = models.FloatField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
-    picture = models.CharField(max_length=100, blank=True, null=True)
+    picture = models.ImageField(default="../media/default/no-photos.png", blank=True, null=True)
 
     category = models.ForeignKey(Category, to_field='id', on_delete=models.CASCADE)
 

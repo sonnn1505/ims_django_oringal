@@ -241,13 +241,41 @@ def import_data_to_db(request):
         # )
  
         path = file.file
- 
-         
         df = pd.read_excel(path)
-        # for index, row in df.iterrows():
-        #     model = Product()
-        #     model.field_1 = row['field_1']
-        #     model.save()
+        df['description'].fillna('', inplace=True)
+        df['drawing_no'].fillna('', inplace=True)
+        df['material'].fillna('', inplace=True)
+        df['material_2'].fillna('', inplace=True)
+        df['comment'].fillna('', inplace=True)
+        df['packaging_length'].fillna(0, inplace=True)
+        df['packaging_wide'].fillna(0, inplace=True)
+        df['welment_profile_length'].fillna(0, inplace=True)
+        df['volume'].fillna(0, inplace=True)
+        df['surface_area'].fillna(0, inplace=True)
+        df['weight'].fillna(0, inplace=True)
+    
+        for index, row in df.iterrows():
+            if Product.objects.filter(part_number = row['part_number']).exists():
+                continue
+            else:
+                product = Product()
+                product.part_number = row['part_number']
+                product.description = row['description']
+                product.drawing_no = row['drawing_no']
+                product.material = row['material']
+                product.material_2 = row['material_2']
+                product.comment = row['comment']
+                product.packaging_length = row['packaging_length']
+                product.packaging_wide = row['packaging_wide']
+                product.welment_profile_length = row['welment_profile_length']
+                product.volume = row['volume']
+                product.surface_area = row['surface_area']
+                product.weight = row['weight']
+                category = Category.objects.get(name = row['category'])
+                
+                if Category.objects.filter(name = row['category']).exists():
+                    product.category = category
+                    product.save()
  
         data_to_display = df.to_html()
  

@@ -78,7 +78,7 @@
                             <td class="px-2 py-1 align-middle">{{ product.surface_area}}</td>
                             <td class="px-2 py-1 align-middle">{{ product.weight}}</td>
                             <td class="px-2 py-1 align-middle">
-                                <img src="{{ STATIC_URL }}/static/assets/img/{{ product.picture}}" alt="Flowers in Chania">
+                                <img src="{{ STATIC_URL }}/static/assets/img/{{ product.picture}}" onerror="this.src='../media/default/no-photos.png'" alt="No img">
                             </td>
                             <td class="px-2 py-1 align-middle text-center">
                                 <a class="btn btn-outline-primary btn-sm edit-data" href="javascript:void(0)" data-id="{{ product.pk }}" title="Edit">

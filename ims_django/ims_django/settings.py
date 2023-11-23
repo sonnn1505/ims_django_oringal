@@ -56,7 +56,7 @@ ROOT_URLCONF = 'ims_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR /'imsApp/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

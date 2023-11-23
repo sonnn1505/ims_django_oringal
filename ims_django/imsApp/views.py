@@ -277,9 +277,9 @@ def import_data_to_db(request):
                     product.category = category
                     product.save()
  
-        data_to_display = df.to_html()
- 
-    return render(request, 'manage_product_import.html', {'data_to_display': data_to_display})
+        # data_to_display = df.to_html()
+    context['page_title'] = "Manage Product"
+    return render(request, 'manage_product.html',context)
    
 @login_required
 def delete_product(request):

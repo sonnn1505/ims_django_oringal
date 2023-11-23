@@ -233,15 +233,21 @@ def manage_product_import(request):
 
 @login_required
 def import_data_to_db(request):
-    data_to_display = None
-    if request.method == 'POST':
-        file = request.FILES['files']
-        # obj = ExcelFile.objects.create(
-        #     file = file
-        # )
- 
-        path = file.file
-        df = pd.read_excel(path)
+    if "GET" == request.method:
+        return render(request, 'manage_product_import', {})
+    else:
+        excel_file = request.FILES["files"]
+
+        # you may put validations here to check extension or file size
+
+        wb = openpyxl.load_workbook(excel_file)
+
+        # getting a particular sheet by name out of many sheets
+        worksheet = wb["Sheet1"]
+        df_tm = worksheet.values
+        coluna_tm = next(df_tm)[0:]
+        df = pd.DataFrame(df_tm, columns=coluna_tm)
+        print(df.head())
         df['description'].fillna('', inplace=True)
         df['drawing_no'].fillna('', inplace=True)
         df['material'].fillna('', inplace=True)
@@ -278,8 +284,7 @@ def import_data_to_db(request):
                     product.save()
  
         # data_to_display = df.to_html()
-    context['page_title'] = "Manage Product"
-    return render(request, 'manage_product.html',context)
+    return redirect('product-page')
    
 @login_required
 def delete_product(request):
@@ -470,3 +475,4 @@ def delete_invoice(request):
         resp['msg'] = 'Invoice has failed to delete'
     
     return HttpResponse(json.dumps(resp), content_type="application/json")
+

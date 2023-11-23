@@ -8,19 +8,19 @@
         </div>
         <div class="card-body">
             <div class="container-fluid">
-			<form action="{% url "import-data-to-db" %}" method="post" enctype="multipart/form-data">
-				{% csrf_token %}
-				<h4>Select & Upload File</h4> 
-				<input type="file" required name="files"> 
-				<button type="submit">Submit</button> 
-			</form>
+				<form action="{% url "import-data-to-db" %}" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<h4>Select & Upload File</h4> 
+					<input type="file" required name="files"> 
+					<button type="submit">Submit</button> 
+				</form>
 
-			{% if data_to_display %}
-				<div>
-					<h2>Uploaded Data</h2>
-					{{ data_to_display | safe }} 
-				</div>
-			{% endif %}
+				{% if data_to_display %}
+					<div>
+						<h2>Uploaded Data</h2>
+						{{ data_to_display | safe }} 
+					</div>
+				{% endif %}
             </div>
         </div>
     </div>

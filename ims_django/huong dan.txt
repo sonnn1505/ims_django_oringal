@@ -59,3 +59,5 @@ create new model:
 
 To apply the changes to the database, you execute the migrate command:
     python manage.py migrate 
+=================upodate code==========
+git reset --hard

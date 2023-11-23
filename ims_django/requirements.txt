@@ -5,3 +5,4 @@ more-itertools
 psycopg2-binary
 openpyxl
 pandas
+django-import-export

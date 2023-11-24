@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block pageContent %}
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-default rounded-0 shadow ">
+        <div class="card-header">
+            <div class="d-flex w-100 align-items-center justify-content-between">
+                <h4 class="card-title fw-bold">Product Import</h4>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container-fluid">
+				<form method="post" enctype="multipart/form-data">
+					{% csrf_token %}   {{ form.as_p }}  
+				  <button type="submit">Upload</button>
+				  </form>{% if img_obj %}  <h3>Succesfully uploaded : {{img_obj.title}}</h3> 
+				   <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
+				  {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock pageContent %}{% block ScriptBlock %}
+	<script>
+		$(function () {
+			/* 1. OPEN THE FILE EXPLORER WINDOW */
+			$(".js-upload-photos").click(function () {
+			$("#fileupload").click();
+			});
+		
+			/* 2. INITIALIZE THE FILE UPLOAD COMPONENT */
+			$("#fileupload").fileupload({
+			dataType: 'json',
+			done: function (e, data) {  /* 3. PROCESS THE RESPONSE FROM THE SERVER */
+				if (data.result.is_valid) {
+				$("#gallery tbody").prepend(
+					"<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td></tr>"
+				)
+				}
+			}
+			});
+		
+		});
+	</script>
+{% endblock ScriptBlock %}

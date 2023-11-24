@@ -40,5 +40,6 @@ urlpatterns = [
     path('save_sales',views.save_sales, name="save-sales"),
     path('invoices',views.invoices,name='invoice-page'),
     path('delete_invoice',views.delete_invoice,name='delete-invoice'),
+    path('upload', views.image_upload_view, name='upload'),
 
 ]

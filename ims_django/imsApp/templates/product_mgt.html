@@ -7,12 +7,13 @@
                 <div class="tools">
                     <button type="button" class="btn btn-primary rounded-0 bg-gradient btn-sm" id='add_new'><i class="fa fa-plus"></i> Add New</button>
                     <button type="button" class="btn btn-primary rounded-0 bg-info bg-gradient btn-sm" id='Import_new'><i class="fa fa-plus"></i> Import New</button>
+                    <button type="button" class="btn btn-primary rounded-0 bg-info bg-gradient btn-sm" id='Upload_imge'><i class="fa fa-plus"></i> Upload Image</button>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <div class="container-fluid">
-                <table class="table table-bordered" id="product-list">
+            <div class="table-responsive">
+                <table class="table" id="product-list">
                     <colgroup>
                         <col width="5%">
                         <col width="10%">
@@ -41,7 +42,7 @@
                             <th class="px-2 py-2 text-center">Decription</th>
                             <th class="px-2 py-2 text-center">Material</th>
                             <th class="px-2 py-2 text-center">Material 2</th>
-                            <th class="px-2 py-2 text-center">Price</th>
+                            <!-- <th class="px-2 py-2 text-center">Price</th> -->
                             <th class="px-2 py-2 text-center">Comment</th>
                             <th class="px-2 py-2 text-center">Packaging_length</th>
                             <th class="px-2 py-2 text-center">packaging_wide</th>
@@ -67,7 +68,7 @@
                             </td>
                             <td class="px-2 py-1 align-middle">{{ product.material}}</td>
                             <td class="px-2 py-1 align-middle">{{ product.material_2}}</td>
-                            <td class="px-2 py-1 align-middle">{{ product.price}}</td>
+                            <!-- <td class="px-2 py-1 align-middle">{{ product.price}}</td> -->
                             <td class="px-2 py-1 align-middle">
                                 <p class="m-0 text-truncate">{{ product.comment }}</p>
                             </td>
@@ -78,7 +79,7 @@
                             <td class="px-2 py-1 align-middle">{{ product.surface_area}}</td>
                             <td class="px-2 py-1 align-middle">{{ product.weight}}</td>
                             <td class="px-2 py-1 align-middle">
-                                <img src="{{ STATIC_URL }}/static/assets/img/{{ product.picture}}" onerror="this.src='../media/default/no-photos.png'" alt="No img">
+                                <img src="{{ MEDIA_URL }}/images/{{ product.picture}}" onerror="this.src='../media/default/no-photos.png'" alt="No img">
                             </td>
                             <td class="px-2 py-1 align-middle text-center">
                                 <a class="btn btn-outline-primary btn-sm edit-data" href="javascript:void(0)" data-id="{{ product.pk }}" title="Edit">
@@ -112,7 +113,7 @@
         $('#product-list').DataTable({
             columnDefs: [{
                 orderable: false,
-                targets: 15
+                targets: 5
             }],
             initComplete: function(settings, json) {
                 $('table td, table th').addClass('px-2 py-1')
@@ -125,6 +126,11 @@
     $(function() {
         $('#Import_new').click(function() {
 			location.href="{% url 'manage-product-import' %}"
+        })
+    })
+    $(function() {
+        $('#Upload_imge').click(function() {
+			location.href="{% url 'upload' %}"
         })
     })
 

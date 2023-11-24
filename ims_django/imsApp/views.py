@@ -8,13 +8,14 @@ import json
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from imsApp.forms import SaveStock, UserRegistration, UpdateProfile, UpdatePasswords, SaveCategory, SaveProduct, SaveInvoice, SaveInvoiceItem
+from imsApp.forms import SaveStock, UserRegistration, UpdateProfile, UpdatePasswords, SaveCategory, SaveProduct, SaveInvoice, SaveInvoiceItem, ImageForm
 from imsApp.models import *
 from cryptography.fernet import Fernet
 from django.conf import settings
 import base64
 import openpyxl
 import pandas as pd
+from django.shortcuts import render
 
 context = {
     'page_title' : 'File Management System',
@@ -476,3 +477,17 @@ def delete_invoice(request):
     
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+@login_required
+def image_upload_view(request):
+    """Process images uploaded by users"""
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Get the current instance object to display in the template
+            img_obj = form.instance
+            # return render(request, 'manage_product_import_photos.html', {'form': form, 'img_obj': img_obj})
+            return redirect('product-page')
+    else:
+        form = ImageForm()
+        return render(request, 'manage_product_import_photos.html', {'form': form})

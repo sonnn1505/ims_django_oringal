@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm, UserC
 
 from django.contrib.auth.models import User
 from more_itertools import quantify
-from .models import Category, Product, Stock, Invoice, Invoice_Item
+from .models import Category, Product, Stock, Invoice, Invoice_Item, Image
 from datetime import datetime
 
 class UserRegistration(UserCreationForm):
@@ -134,6 +134,10 @@ class SaveProduct(forms.ModelForm):
     #     except:
     #         return code
     #     raise forms.ValidationError(f"{code} Category Already Exists.")
+
+    def clean_price(self):
+        price = 1
+        return price
     
     def clean_category(self):
         pid = self.cleaned_data['category']
@@ -224,6 +228,9 @@ class SaveInvoiceItem(forms.ModelForm):
         raise forms.ValidationError("Quantity is not valid")
     
 
-
-
+class ImageForm(forms.ModelForm):
+    """Form for the image model"""
+    class Meta:
+        model = Image
+        fields = ('title', 'image')
 

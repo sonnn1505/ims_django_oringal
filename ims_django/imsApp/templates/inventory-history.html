@@ -12,14 +12,14 @@
                 <fieldset class="border-bottom">
                     <legend>Product Details</legend>
                     <dl>
-                        <dt class="tex-muted">Code</dt>
-                        <dd class="ps-4">{{ product.code }}</dd>
-                        <dt class="tex-muted">Name</dt>
-                        <dd class="ps-4">{{ product.name }}</dd>
+                        <dt class="tex-muted">Part Number</dt>
+                        <dd class="ps-4">{{ product.part_number }}</dd>
                         <dt class="tex-muted">Description</dt>
                         <dd class="ps-4">{{ product.description }}</dd>
-                        <dt class="tex-muted">Price</dt>
-                        <dd class="ps-4">{{ product.price|intcomma }}</dd>
+                        <dt class="tex-muted">Picture</dt>
+                        <dd class="ps-4">
+                            <img src="{{ MEDIA_URL }}/images/{{ product.picture}}" onerror="this.src='../media/default/no-photos.png'" alt="No img">
+                        </dd>
                     </dl>
                 </fieldset>
                 <fieldset>

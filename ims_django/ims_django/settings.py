@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-rehm$-g0&_c-nzb54b7xp-pcnehad63vd4b-4zlwh=o839g1f@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.localhost', '127.0.0.1','10.91.6.104', '[::1]']
+ALLOWED_HOSTS = ['.localhost', '127.0.0.1','192.168.200.12', '[::1]']
 
 
 # Application definition
@@ -85,8 +85,8 @@ WSGI_APPLICATION = 'ims_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ims01',
-        'USER': 'admin',
+        'NAME': 'ims',
+        'USER': 'postgres',
         'PASSWORD': 'sa',
         'HOST': '127.0.0.1',
         'PORT': '5432',

@@ -98,30 +98,54 @@ class SaveCategory(forms.ModelForm):
 
 class SaveProduct(forms.ModelForm):
     name = forms.CharField(max_length="250", required= False)
-    status = forms.ChoiceField(choices=[('1','Active'),('2','Inactive')], required=False)
-    part_number             =forms.CharField(max_length=100)
-    drawing_no              =forms.CharField(max_length=100, required=False)
-    description             =forms.CharField(max_length=400, required=False)
-    material                =forms.CharField(max_length=100, required=False)
-    material_2              =forms.CharField(max_length=100, required=False)
-    price                   =forms.FloatField(required=False)
-    comment                 =forms.CharField(max_length=4000, required=False)
-    packaging_length        =forms.FloatField(required=False)
-    packaging_wide          =forms.FloatField(required=False)
-    welment_profile_length  =forms.FloatField(required=False)
-    volume                  =forms.FloatField(required=False)
-    surface_area            =forms.FloatField(required=False)
-    weight                  =forms.FloatField(required=False)
-    category                =forms.CharField(max_length=100, required=False)
-    picture                 =forms.CharField(max_length=100, required=False)
-
-
+    
+    category            = forms.CharField(max_length=100, required=False)
+    product_category    = forms.CharField(max_length=100, required=False)
+    part_number         = forms.CharField(max_length=100, required=False)
+    drawing_no          = forms.CharField(max_length=100, required=False)
+    picture             = forms.CharField(max_length=100, required=False)
+    description         = forms.CharField(max_length=4000,required=False)
+    description_2       = forms.CharField(max_length=4000,required=False)
+    material            = forms.CharField(max_length=100,required=False)
+    demand_quantity     = forms.IntegerField(required=False)
+    Specification       = forms.CharField(max_length=100,required=False)
+    color               = forms.CharField(max_length=100,required=False)
+    standard            = forms.CharField(max_length=100,required=False)
+    model               = forms.CharField(max_length=100,required=False)
+    maker               = forms.CharField(max_length=100,required=False)
+    origin              = forms.CharField(max_length=100,required=False)
+    heat_treatment      = forms.CharField(max_length=100,required=False)
+    surface_protection  = forms.CharField(max_length=100,required=False)
+    suface_finish       = forms.CharField(max_length=100,required=False)
+    comment             = forms.CharField(max_length=4000, required=False)
+    welment_profile_length = forms.CharField(required=False)
+    weight                 = forms.CharField(required=False)
+    status              = forms.ChoiceField(choices=[('1','Active'),('2','Inactive')])
     class Meta:
         model = Product
-        fields = ('code','name','status','part_number','drawing_no','description','material'\
-                  ,'material_2','price','comment', 'packaging_length'\
-                  , 'packaging_wide', 'welment_profile_length','volume'\
-                  , 'surface_area','weight','category','picture')
+        fields = ('category'
+                    ,'product_category'
+                    ,'part_number'
+                    ,'drawing_no'
+                    ,'picture'
+                    ,'description'
+                    ,'description_2'
+                    ,'material'
+                    ,'demand_quantity'
+                    ,'Specification'
+                    ,'color'
+                    ,'standard'
+                    ,'model'
+                    ,'maker'
+                    ,'origin'
+                    ,'heat_treatment'
+                    ,'surface_protection'
+                    ,'suface_finish'
+                    ,'comment'
+                    ,'welment_profile_length'
+                    ,'weight'
+                    ,'status'
+                  )
 
     # def clean_code(self):
     #     id = self.instance.id if self.instance.id else 0

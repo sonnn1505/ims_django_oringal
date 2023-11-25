@@ -16,6 +16,7 @@ import base64
 import openpyxl
 import pandas as pd
 from django.shortcuts import render
+import numpy as np
 
 context = {
     'page_title' : 'File Management System',
@@ -249,40 +250,43 @@ def import_data_to_db(request):
         coluna_tm = next(df_tm)[0:]
         df = pd.DataFrame(df_tm, columns=coluna_tm)
         print(df.head())
-        df['description'].fillna('', inplace=True)
-        df['drawing_no'].fillna('', inplace=True)
-        df['material'].fillna('', inplace=True)
-        df['material_2'].fillna('', inplace=True)
-        df['comment'].fillna('', inplace=True)
-        df['packaging_length'].fillna(0, inplace=True)
-        df['packaging_wide'].fillna(0, inplace=True)
-        df['welment_profile_length'].fillna(0, inplace=True)
-        df['volume'].fillna(0, inplace=True)
-        df['surface_area'].fillna(0, inplace=True)
-        df['weight'].fillna(0, inplace=True)
+        df['demand_quantity'].fillna(0, inplace=True)
+        df.fillna('', inplace=True)
     
         for index, row in df.iterrows():
-            if Product.objects.filter(part_number = row['part_number']).exists():
-                continue
-            else:
-                product = Product()
-                product.part_number = row['part_number']
-                product.description = row['description']
-                product.drawing_no = row['drawing_no']
-                product.material = row['material']
-                product.material_2 = row['material_2']
-                product.comment = row['comment']
-                product.packaging_length = row['packaging_length']
-                product.packaging_wide = row['packaging_wide']
-                product.welment_profile_length = row['welment_profile_length']
-                product.volume = row['volume']
-                product.surface_area = row['surface_area']
-                product.weight = row['weight']
-                category = Category.objects.get(name = row['category'])
-                
-                if Category.objects.filter(name = row['category']).exists():
-                    product.category = category
-                    product.save()
+            part_num_tmpl = row['part_number']
+            if part_num_tmpl is not None:
+                if Product.objects.filter(part_number = part_num_tmpl).exists():
+                    prd = Product.objects.get(part_number = part_num_tmpl)
+                    prd.demand_quantity = prd.demand_quantity + row['demand_quantity']
+                    prd.save()
+                else:
+                    product = Product()
+                    cat =  row['category']
+                    if Category.objects.filter(name = cat).exists():
+                        category = Category.objects.get(name = row['category'])
+                        product.category = category
+                        product.part_number = part_num_tmpl
+                        product.product_category = row['product_category']
+                        product.drawing_no = row['drawing_no']
+                        product.description = row['description']
+                        product.description_2 = row['description_2']
+                        product.material = row['material']
+                        product.picture = str(row['part_number']) + '.JPG'
+                        product.demand_quantity = row['demand_quantity']
+                        product.Specification = row['Specification']
+                        product.color = row['color']
+                        product.standard = row['standard']
+                        product.model = row['model']
+                        product.maker = row['maker']
+                        product.origin = row['origin']
+                        product.heat_treatment = row['heat_treatment']
+                        product.surface_protection = row['surface_protection']
+                        product.suface_finish = row['suface_finish']
+                        product.comment = row['comment']
+                        product.welment_profile_length = row['welment_profile_length']
+                        product.weight = row['weight']
+                        product.save()
  
         # data_to_display = df.to_html()
     return redirect('product-page')

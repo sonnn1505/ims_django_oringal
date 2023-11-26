@@ -17,57 +17,97 @@
             </select>
         </div>
         <div class="form-group mb-3 ">
+            <label for="part_number" class="control-label">Product category</label>
+            <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.product_category }}" >
+        </div>
+        <div class="form-group mb-3 ">
             <label for="part_number" class="control-label">Part number</label>
-            <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.part_number }}" >
-             <input type="hidden" id="picture" name="picture" value="{{product.part_number}}.JPG">
+            <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.part_number }}" disabled>
         </div>
         <div class="form-group mb-3 ">
             <label for="drawing_no" class="control-label">Drawing no</label>
             <input type="text" class="form-control rounded-0" id="drawing_no" name="drawing_no" value="{{ product.drawing_no }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="drawing_no" class="control-label">Picture</label>
+            <!-- <input type="file" id="picture" name="picture" value="{{ product.picture}}" > -->
+            <input type="hidden" id="picture" name="picture" value="{{product.part_number}}.JPG">
         </div>
         <div class="form-group mb-3">
             <label for="description" class="control-label">Description</label>
             <textarea class="form-control rounded-0" name="description" id="description" rows="5" >{{ product.description }}</textarea>
         </div>
         <div class="form-group mb-3">
+            <label for="description" class="control-label">Description 2</label>
+            <textarea class="form-control rounded-0" name="description2" id="description2" rows="5" >{{ product.description2 }}</textarea>
+        </div>
+        <div class="form-group mb-3">
             <label for="material" class="control-label">Material</label>
-            <textarea class="form-control rounded-0" name="material" id="material" rows="5" >{{ product.material }}</textarea>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="material" name="material" value="{{ product.material }}" >
         </div>
         <div class="form-group mb-3">
-            <label for="material_2" class="control-label">Material 2</label>
-            <textarea class="form-control rounded-0" name="material_2" id="material_2" rows="5" >{{ product.material_2 }}</textarea>
+            <label for="demand_quantity" class="control-label">Demand Quantity</label>
+            <input type="number" step="any" class="form-control rounded-0 text-end" id="demand_quantity" name="demand_quantity" value="{{ product.demand_quantity }}" >
         </div>
-        <!-- <div class="form-group mb-3 ">
-            <label for="price" class="control-label">Price</label>
-            <input type="number" step="any" class="form-control rounded-0 text-end" id="price" name="price" value="{{ product.price }}" >
-        </div> -->
         <div class="form-group mb-3">
+            <label for="Specification" class="control-label">Specification</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="Specification" name="Specification" value="{{ product.Specification }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="color" class="control-label">Color</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="color" name="color" value="{{ product.color }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="standard" class="control-label">Standard</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="standard" name="standard" value="{{ product.standard }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="model" class="control-label">Model</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="model" name="model" value="{{ product.model }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="maker" class="control-label">Maker</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="maker" name="maker" value="{{ product.maker }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="origin" class="control-label">Origin</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="origin" name="origin" value="{{ product.origin }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="heat_treatment" class="control-label">Heat treatment</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="heat_treatment" name="heat_treatment" value="{{ product.heat_treatment }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="surface_protection" class="control-label">Surface protection</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="surface_protection" name="surface_protection" value="{{ product.surface_protection }}" >
+        </div>
+        <div class="form-group mb-3 ">
+            <label for="suface_finish" class="control-label">suface finish</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="suface_finish" name="suface_finish" value="{{ product.suface_finish }}" >
+        </div>
+        <div class="form-group mb-3 ">
             <label for="comment" class="control-label">Comment</label>
-            <textarea class="form-control rounded-0" name="comment" id="comment" rows="5" >{{ product.comment }}</textarea>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="comment" name="comment" value="{{ product.comment }}" >
         </div>
         <div class="form-group mb-3 ">
-            <label for="packaging_length" class="control-label">Packaging_length</label>
-            <input type="number" step="any" class="form-control rounded-0 text-end" id="packaging_length" name="packaging_length" value="{{ product.packaging_length }}" >
+            <label for="welment_profile_length" class="control-label">welment profile length</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="welment_profile_length" name="welment_profile_length" value="{{ product.welment_profile_length }}" >
         </div>
         <div class="form-group mb-3 ">
-            <label for="packaging_wide" class="control-label">Packaging_wide</label>
-            <input type="number" step="any" class="form-control rounded-0 text-end" id="packaging_wide" name="packaging_wide" value="{{ product.packaging_wide }}" >
+            <label for="weight" class="control-label">weight</label>
+            <input type="text" step="any" class="form-control rounded-0 text-end" id="weight" name="weight" value="{{ product.weight }}" >
         </div>
         <div class="form-group mb-3 ">
-            <label for="welment_profile_length" class="control-label">Welment_profile_length</label>
-            <input type="number" step="any" class="form-control rounded-0 text-end" id="welment_profile_length" name="welment_profile_length" value="{{ product.welment_profile_length }}" >
-        </div>
-        <div class="form-group mb-3 ">
-            <label for="volume" class="control-label">Volume</label>
-            <input type="number" step="any" class="form-control rounded-0 text-end" id="volume" name="volume" value="{{ product.volume }}" >
-        </div>
-        <div class="form-group mb-3 ">
-            <label for="surface_area" class="control-label">Surface_area</label>
-            <input type="number" step="any" class="form-control rounded-0 text-end" id="surface_area" name="surface_area" value="{{ product.surface_area }}" >
-        </div>
-        <div class="form-group mb-3 ">
-            <label for="weight" class="control-label">Weight</label>
-            <input type="weight" step="any" class="form-control rounded-0 text-end" id="weight" name="weight" value="{{ product.weight }}" >
+            <label for="status" class="control-label">Status</label>
+            <select class="form-select d-md-inline" id="status" name="status">
+                    {% if product.status == '1' %}
+                        <option value="{{product.status}}" selected> Active</option>
+                        <option value="2"> InActive</option>
+                    {% else %}
+                        <option value="1"> Active</option>    
+                        <option value="{{product.status}}"> InActive</option>
+                    {% endif %}                   
+            </select>
         </div>
     </form>
 </div>

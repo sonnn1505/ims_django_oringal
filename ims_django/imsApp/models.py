@@ -76,6 +76,7 @@ class Invoice(models.Model):
     transaction = models.CharField(max_length = 250)
     customer = models.CharField(max_length = 250)
     total = models.FloatField(default= 0)
+    type = models.CharField(max_length=2,choices=(('1','Import'),('2','Export')), default = 1) 
     date_created = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -96,9 +97,9 @@ class Invoice_Item(models.Model):
         return self.invoice.transaction
 
 
-@receiver(models.signals.post_save, sender=Invoice_Item)
+@receiver(models.signals.post_save, sender=Invoice_Item, )
 def stock_update(sender, instance, **kwargs):
-    stock = Stock(product = instance.product, quantity = instance.quantity, type = 2)
+    stock = Stock(product = instance.product, quantity = instance.quantity, type = instance.invoice.type)
     stock.save()
     # stockID = Stock.objects.last().id
     Invoice_Item.objects.filter(id= instance.id).update(stock=stock)

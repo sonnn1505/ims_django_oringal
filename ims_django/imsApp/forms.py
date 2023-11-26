@@ -201,10 +201,10 @@ class SaveInvoice(forms.ModelForm):
     transaction = forms.CharField(max_length=100)
     customer = forms.CharField(max_length=250)
     total = forms.FloatField()
-
+    type= forms.IntegerField()
     class Meta:
         model = Invoice
-        fields = ('transaction', 'customer', 'total')
+        fields = ('transaction', 'customer', 'total','type')
 
     def clean_transaction(self):
         pref = datetime.today().strftime('%Y%m%d')

@@ -251,7 +251,7 @@ def import_data_to_db(request):
         df = pd.DataFrame(df_tm, columns=coluna_tm)
         print(df.head())
         df['demand_quantity'].fillna(0, inplace=True)
-        df.fillna('', inplace=True)
+        df = df.fillna('', inplace=True)
     
         for index, row in df.iterrows():
             part_num_tmpl = row['part_number']
@@ -403,6 +403,13 @@ def sales_mgt(request):
     context['products'] = products
     return render(request,'sales.html', context)
 
+@login_required
+def buy_mgt(request):
+    context['page_title'] = 'Buy'
+    products = Product.objects.filter(status = 1).all()
+    context['products'] = products
+    return render(request,'buy.html', context)
+
 
 def get_product(request,pk = None):
     resp = {'status':'failed','data':{},'msg':''}
@@ -415,6 +422,42 @@ def get_product(request,pk = None):
         resp['data']['price'] = product.price
         resp['status'] = 'success'
     
+    return HttpResponse(json.dumps(resp),content_type="application/json")
+
+def save_buy(request):
+    resp = {'status':'failed', 'msg' : ''}
+    id = 2
+    if request.method == 'POST':
+        pids = request.POST.getlist('pid[]')
+        invoice_form = SaveInvoice(request.POST)
+        if invoice_form.is_valid():
+            invoice_form.save()
+            invoice = Invoice.objects.last()
+            for pid in pids:
+                data = {
+                    'invoice':invoice.id,
+                    'product':pid,
+                    'quantity':request.POST['quantity['+str(pid)+']'],
+                    'price':request.POST['price['+str(pid)+']'],
+                }
+                print(data)
+                ii_form = SaveInvoiceItem(data=data)
+                print(ii_form.data)
+                if ii_form.is_valid():
+                    ii_form.save()
+                else:
+                    for fields in ii_form:
+                        for error in fields.errors:
+                            resp['msg'] += str(error + "<br>")
+                    break
+            messages.success(request, "Sale Transaction has been saved.")
+            resp['status'] = 'success'
+            # invoice.delete()
+        else:
+            for fields in invoice_form:
+                for error in fields.errors:
+                    resp['msg'] += str(error + "<br>")
+
     return HttpResponse(json.dumps(resp),content_type="application/json")
 
 

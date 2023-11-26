@@ -3,21 +3,21 @@
     <div class="card card-default border shadow rounded-0">
         <div class="card-header">
             <div class="w-100 d-flex justify-content-between">
-                <h5 class="fw-bolder card-title">Export Transaction</h5>
+                <h5 class="fw-bolder card-title">Imxport Transaction</h5>
             </div>
         </div>
         <div class="card-body">
             <div class="conteiner-fluid">
-                <form action="" id="sale-form">
+                <form action="" id="buy_form">
                     {% csrf_token %}
                     <input type="hidden" name="transaction" value="1">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="from-group">
-                                <label for="customer" class="control-label">Sale ID</label>
+                                <label for="customer" class="control-label">Buy ID</label>
                                 <input type="text" id="customer" name="customer" class="form-control rounded-0" required>
-                                <!-- type = 2 is Export -->
-                                <input type="hidden" id="type" name="type" class="form-control rounded-0" value="2">
+                                <!-- type = 1 is import -->
+                                <input type="hidden" id="type" name="type" class="form-control rounded-0" value="1">
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="card-footer py-1 text-end">
-            <button class="btn btn-primary bg-gradient px-3 rounded-0" form="sale-form"><i class="fa fa-save"></i> Save</button>
+            <button class="btn btn-primary bg-gradient px-3 rounded-0" form="buy_form"><i class="fa fa-save"></i> Save</button>
         </div>
     </div>
 </div>
@@ -162,7 +162,7 @@
             })
         })
 
-        $('#sale-form').submit(function(e) {
+        $('#buy_form').submit(function(e) {
             e.preventDefault();
             var _this = $(this)
             $('.err-msg').remove();
@@ -175,7 +175,7 @@
             }
             start_loader();
             $.ajax({
-                url: "{% url 'save-sales' %}",
+                url: "{% url 'save-buy' %}",
                 data: new FormData($(this)[0]),
                 cache: false,
                 contentType: false,

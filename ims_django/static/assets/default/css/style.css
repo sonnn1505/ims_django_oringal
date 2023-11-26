@@ -230,3 +230,6 @@ span.select2-selection.select2-selection--single {
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+.thead input {
+    width: 100%;
+}

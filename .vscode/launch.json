@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}\\ims_django\\manage.py",
             "args": [
                 "runserver",
-                "10.91.6.104:8000"
+                "192.168.200.12:3003"
             ],
             "django": true,
             "justMyCode": true

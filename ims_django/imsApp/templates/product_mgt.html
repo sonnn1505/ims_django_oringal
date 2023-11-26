@@ -71,7 +71,11 @@
                             <td>{{ product.comment}}</td>
                             <td>{{ product.welment_profile_lengtd}}</td>
                             <td>{{ product.weight}}</td>
-                            <td>{{ product.status}}</td>
+                            <td>
+                                {% if product.status == '1' %}
+                                <span class="badge bg-primary bg-gradient rounded-pill px-2">Active</span> {% else %}
+                                <span class="badge bg-secondary bg-gradient rounded-pill px-2">Inactive</span> {% endif %}
+                            </td>
                             <td>{{ product.date_created}}</td>
                             <td>{{ product.date_updated}}</td>
                             <td class="px-2 py-1 align-middle text-center">
@@ -102,19 +106,78 @@
         $('.delete-data').click(function() {
             _conf("Are you sure to delete this Product permanently?", "delete_product", [$(this).attr('data-id')])
         })
-
-        $('#product-list').DataTable({
-            columnDefs: [{
-                orderable: false,
-                targets: 5
-            }],
-            initComplete: function(settings, json) {
-                $('table td, table th').addClass('px-2 py-1')
+        // Setup - add a text input to each footer cell
+        $('#product-list thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#product-list thead');
+        var table = $('#product-list').DataTable({
+            orderCellsTop: true,
+            fixedHeader: true,
+            initComplete: function () {
+                var api = this.api();
+    
+                // For each column
+                api
+                    .columns()
+                    .eq(0)
+                    .each(function (colIdx) {
+                        // Set the header cell to contain the input element
+                        var cell = $('.filters th').eq(
+                            $(api.column(colIdx).header()).index()
+                        );
+                        var title = $(cell).text();
+                        $(cell).html('<input type="text" placeholder="' + title + '" />');
+    
+                        // On every keypress in this input
+                        $(
+                            'input',
+                            $('.filters th').eq($(api.column(colIdx).header()).index())
+                        )
+                            .off('keyup change')
+                            .on('change', function (e) {
+                                // Get the search value
+                                $(this).attr('title', $(this).val());
+                                var regexr = '({search})'; //$(this).parents('th').find('select').val();
+    
+                                var cursorPosition = this.selectionStart;
+                                // Search the column for that value
+                                api
+                                    .column(colIdx)
+                                    .search(
+                                        this.value != ''
+                                            ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                            : '',
+                                        this.value != '',
+                                        this.value == ''
+                                    )
+                                    .draw();
+                            })
+                            .on('keyup', function (e) {
+                                e.stopPropagation();
+    
+                                $(this).trigger('change');
+                                $(this)
+                                    .focus()[0]
+                                    .setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                    });
             },
-            drawCallback: function(settings) {
-                $('table td, table th').addClass('px-2 py-1')
-            }
-        })
+        });
+
+        // $('#product-list').DataTable({
+        //     fixedHeader: true
+        //     ,columnDefs: [{
+        //         orderable: false,
+        //         targets: 5
+        //     }],
+        //     initComplete: function(settings, json) {
+        //         $('table td, table th').addClass('px-2 py-1')
+        //     },
+        //     drawCallback: function(settings) {
+        //         $('table td, table th').addClass('px-2 py-1')
+        //     }
+        // })
     })
     $(function() {
         $('#Import_new').click(function() {

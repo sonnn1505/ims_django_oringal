@@ -528,13 +528,20 @@ def delete_invoice(request):
 def image_upload_view(request):
     """Process images uploaded by users"""
     if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            # Get the current instance object to display in the template
-            img_obj = form.instance
-            # return render(request, 'manage_product_import_photos.html', {'form': form, 'img_obj': img_obj})
-            return redirect('product-page')
+        files = request.FILES.getlist('files')
+        for file in files:
+            new_file = Files(
+                file = file
+            )
+            new_file.save()
+
+        # form = ImageForm(request.POST, request.FILES)
+        # if form.is_valid():
+        #     form.save()
+        #     # Get the current instance object to display in the template
+        #     img_obj = form.instance
+        #     # return render(request, 'manage_product_import_photos.html', {'form': form, 'img_obj': img_obj})
+        return redirect('product-page')
     else:
         form = ImageForm()
         return render(request, 'manage_product_import_photos.html', {'form': form})

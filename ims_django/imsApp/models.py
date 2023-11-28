@@ -111,8 +111,8 @@ def delete_stock(sender, instance, **kwargs):
     except:
         return instance.stock.id
 
-class ExcelFile(models.Model):
-    file = models.FileField(upload_to="excel")
+class Files(models.Model):
+    file = models.FileField(upload_to="images")
 
 class Image(models.Model):
     title = models.CharField(max_length=200)

@@ -15,10 +15,11 @@
 					<button type="submit">Submit</button> 
 				</form>
 
-				{% if data_to_display %}
+				{% if error_mgs %}
 					<div>
-						<h2>Uploaded Data</h2>
-						{{ data_to_display | safe }} 
+						<h3 style="color: red;">ERROR
+							<p>{{ error_mgs}} </p>
+						</h3>
 					</div>
 				{% endif %}
             </div>

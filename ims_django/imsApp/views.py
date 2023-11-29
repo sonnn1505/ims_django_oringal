@@ -248,10 +248,28 @@ def import_data_to_db(request):
         worksheet = wb["Sheet1"]
         df_tm = worksheet.values
         coluna_tm = next(df_tm)[0:]
+
+        #start validate schema excel file
+        colum_need = ('stt', 'category', 'product_category', 'part_number'\
+                      , 'drawing_no', 'picture', 'description', 'description_2'\
+                      , 'material', 'demand_quantity', 'Specification', 'color'\
+                      , 'standard', 'model', 'maker', 'origin', 'heat_treatment'\
+                      , 'surface_protection', 'suface_finish', 'comment'\
+                      , 'welment_profile_length', 'weight')
+        temp3 = []
+        for element in coluna_tm:
+            if element not in colum_need:
+                temp3.append(element)
+        if len(temp3) >0:
+            context['error_mgs'] = "columns header in file: [" + ', '.join(temp3) + '] are Not Validate the Names'
+            return render(request, 'manage_product_import.html', context)
+
+        #end validate schema excel file
+
         df = pd.DataFrame(df_tm, columns=coluna_tm)
         print(df.head())
         df['demand_quantity'].fillna(0, inplace=True)
-        df = df.fillna('', inplace=True)
+        df = df.fillna('')
     
         for index, row in df.iterrows():
             part_num_tmpl = row['part_number']

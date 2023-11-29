@@ -112,6 +112,8 @@
         .addClass('filters')
         .appendTo('#product-list thead');
         var table = $('#product-list').DataTable({
+            pageLength:5,
+            lengthMenu:[5,10,20,30,50,100],
             scrollX:true,
             scrollY:true,
             orderCellsTop: true,

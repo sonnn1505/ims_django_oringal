@@ -7,8 +7,8 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="container-fluid">
-                <table class="table table-bordered" id="invoice-list">
+            <div class="table-responsive">
+                <table class="table" id="invoice-list">
                     <thead>
                         <tr class="bg-gradient bg-primary bg-opacity-50 text-light">
                             <th>#</th>
@@ -58,8 +58,8 @@
         .addClass('filters')
         .appendTo('#invoice-list thead');
         var table = $('#invoice-list').DataTable({
-            scrollX: true,
-            scrollY:true,
+            // scrollX: true,
+            // scrollY:true,
             orderCellsTop: true,
             fixedHeader: true,
             initComplete: function () {

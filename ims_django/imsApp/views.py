@@ -223,7 +223,9 @@ def manage_product(request, pk=None):
     if not pk is None:
         product = Product.objects.get(id = pk)
         context['product'] = product
+        context['edit'] = '1'
     else:
+        context['edit'] = '0'
         context['product'] = {}
 
     return render(request, 'manage_product.html', context)

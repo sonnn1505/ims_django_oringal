@@ -22,7 +22,11 @@
         </div>
         <div class="form-group mb-3 ">
             <label for="part_number" class="control-label">Part number</label>
-            <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.part_number }}" disabled>
+            {% if edit == '1' %}
+                <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.part_number }}"disabled>
+            {% else %}
+                <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.part_number }}">
+            {% endif %}
         </div>
         <div class="form-group mb-3 ">
             <label for="drawing_no" class="control-label">Drawing no</label>
@@ -43,59 +47,59 @@
         </div>
         <div class="form-group mb-3">
             <label for="material" class="control-label">Material</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="material" name="material" value="{{ product.material }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="material" name="material" value="{{ product.material }}" >
         </div>
         <div class="form-group mb-3">
             <label for="demand_quantity" class="control-label">Demand Quantity</label>
-            <input type="number" step="any" class="form-control rounded-0 text-end" id="demand_quantity" name="demand_quantity" value="{{ product.demand_quantity }}" >
+            <input type="number" step="any" class="form-control rounded-0" id="demand_quantity" name="demand_quantity" value="{{ product.demand_quantity }}" >
         </div>
         <div class="form-group mb-3">
             <label for="Specification" class="control-label">Specification</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="Specification" name="Specification" value="{{ product.Specification }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="Specification" name="Specification" value="{{ product.Specification }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="color" class="control-label">Color</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="color" name="color" value="{{ product.color }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="color" name="color" value="{{ product.color }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="standard" class="control-label">Standard</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="standard" name="standard" value="{{ product.standard }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="standard" name="standard" value="{{ product.standard }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="model" class="control-label">Model</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="model" name="model" value="{{ product.model }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="model" name="model" value="{{ product.model }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="maker" class="control-label">Maker</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="maker" name="maker" value="{{ product.maker }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="maker" name="maker" value="{{ product.maker }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="origin" class="control-label">Origin</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="origin" name="origin" value="{{ product.origin }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="origin" name="origin" value="{{ product.origin }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="heat_treatment" class="control-label">Heat treatment</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="heat_treatment" name="heat_treatment" value="{{ product.heat_treatment }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="heat_treatment" name="heat_treatment" value="{{ product.heat_treatment }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="surface_protection" class="control-label">Surface protection</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="surface_protection" name="surface_protection" value="{{ product.surface_protection }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="surface_protection" name="surface_protection" value="{{ product.surface_protection }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="suface_finish" class="control-label">suface finish</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="suface_finish" name="suface_finish" value="{{ product.suface_finish }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="suface_finish" name="suface_finish" value="{{ product.suface_finish }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="comment" class="control-label">Comment</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="comment" name="comment" value="{{ product.comment }}" >
+            <textarea class="form-control rounded-0" name="comment" id="comment" rows="5" >{{ product.comment }}</textarea>
         </div>
         <div class="form-group mb-3 ">
             <label for="welment_profile_length" class="control-label">welment profile length</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="welment_profile_length" name="welment_profile_length" value="{{ product.welment_profile_length }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="welment_profile_length" name="welment_profile_length" value="{{ product.welment_profile_length }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="weight" class="control-label">weight</label>
-            <input type="text" step="any" class="form-control rounded-0 text-end" id="weight" name="weight" value="{{ product.weight }}" >
+            <input type="text" step="any" class="form-control rounded-0" id="weight" name="weight" value="{{ product.weight }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="status" class="control-label">Status</label>

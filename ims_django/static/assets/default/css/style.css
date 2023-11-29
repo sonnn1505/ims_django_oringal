@@ -223,7 +223,7 @@ span.select2-selection.select2-selection--single {
     max-width: 100%;
 }
 
-.table-responsive {
+/* .table-responsive {
     display: block;
     width: 100%;
     overflow-x: auto;
@@ -232,4 +232,7 @@ span.select2-selection.select2-selection--single {
 }
 .thead input {
     width: 100%;
+} */
+.div input{
+    text-align: left;
 }

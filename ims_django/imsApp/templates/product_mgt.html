@@ -112,6 +112,8 @@
         .addClass('filters')
         .appendTo('#product-list thead');
         var table = $('#product-list').DataTable({
+            scrollX:true,
+            scrollY:true,
             orderCellsTop: true,
             fixedHeader: true,
             initComplete: function () {
@@ -165,19 +167,9 @@
             },
         });
 
-        // $('#product-list').DataTable({
-        //     fixedHeader: true
-        //     ,columnDefs: [{
-        //         orderable: false,
-        //         targets: 5
-        //     }],
-        //     initComplete: function(settings, json) {
-        //         $('table td, table th').addClass('px-2 py-1')
-        //     },
-        //     drawCallback: function(settings) {
-        //         $('table td, table th').addClass('px-2 py-1')
-        //     }
-        // })
+        var table = $('#product-list').DataTable();
+        $('#container').css( 'display', 'block' );
+        table.columns.adjust().draw();
     })
     $(function() {
         $('#Import_new').click(function() {

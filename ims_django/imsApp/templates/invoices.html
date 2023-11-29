@@ -11,29 +11,29 @@
                 <table class="table table-bordered" id="invoice-list">
                     <thead>
                         <tr class="bg-gradient bg-primary bg-opacity-50 text-light">
-                            <th class="px-2 py-2 text-center">#</th>
-                            <th class="px-2 py-2 text-center">Date/Time</th>
-                            <th class="px-2 py-2 text-center">Transaction Code</th>
-                            <th class="px-2 py-2 text-center">Invoice Name</th>
-                            <th class="px-2 py-2 text-center">Total Item</th>
-                            <th class="px-2 py-2 text-center">Invoice type</th>
-                            <th class="px-2 py-2 text-center">Action</th>
+                            <th>#</th>
+                            <th>Date/Time</th>
+                            <th>Transaction Code</th>
+                            <th>Invoice Name</th>
+                            <th>Total Item</th>
+                            <th>Invoice type</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for invoice in invoices %}
                         <tr>
-                            <td class="px-2 py-1 align-middle text-center">{{ forloop.counter }}</td>
-                            <td class="px-2 py-1 align-middle">{{ invoice.date_created|date:"Y-m-d h:i A" }}</td>
-                            <td class="px-2 py-1 align-middle">{{ invoice.transaction }}</td>
-                            <td class="px-2 py-1 align-middle">{{ invoice.customer }}</td>
-                            <td class="px-2 py-1 align-middle text-end">{{ invoice.item_count|floatformat:0|intcomma }}</td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ invoice.date_created|date:"Y-m-d h:i A" }}</td>
+                            <td>{{ invoice.transaction }}</td>
+                            <td>{{ invoice.customer }}</td>
+                            <td>{{ invoice.item_count|floatformat:0|intcomma }}</td>
                             <td class="text-center">
                                 {% if invoice.type == '1' %}
                                 <span class="badge px-3 rounded-pill bg-primary bg-gradient">Import</span> {% else %}
                                 <span class="badge px-3 rounded-pill bg-danger bg-gradient">Export</span> {% endif %}
                             </td>
-                            <td class="px-2 py-1 align-middle text-center">
+                            <td>
                                 <button class="btn btn-outline-danger btn-sm delete-data" type="button" data-id="{{ invoice.pk }}" title="Delete">
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -52,25 +52,14 @@
         $('.delete-data').click(function() {
             _conf("Are you sure to delete this invoice permanently?", "delete_invoice", [$(this).attr('data-id')])
         })
-
-        // $('#invoice-list').DataTable({
-        //     columnDefs: [{
-        //         orderable: false,
-        //         targets: 5
-        //     }],
-        //     initComplete: function(settings, json) {
-        //         $('table td, table th').addClass('px-2 py-1')
-        //     },
-        //     drawCallback: function(settings) {
-        //         $('table td, table th').addClass('px-2 py-1')
-        //     }
-        // })
         // Setup - add a text input to each footer cell
         $('#invoice-list thead tr')
         .clone(true)
         .addClass('filters')
         .appendTo('#invoice-list thead');
         var table = $('#invoice-list').DataTable({
+            scrollX: true,
+            scrollY:true,
             orderCellsTop: true,
             fixedHeader: true,
             initComplete: function () {
@@ -123,6 +112,9 @@
                     });
             },
         });
+        var table = $('#invoice-list').DataTable();
+        $('#container').css( 'display', 'block' );
+        table.columns.adjust().draw();
     })
 
     function delete_invoice($id) {

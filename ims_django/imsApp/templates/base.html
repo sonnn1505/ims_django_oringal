@@ -15,17 +15,34 @@
     <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/select2/dist/css/select2.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/mdb-blogtemplate/css/mdb.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'assets/DataTables/datatables.min.css' %}" />
+    <!-- <link rel="stylesheet" href="{% static 'assets/DataTables/datatables.min.css' %}" /> -->
+    <link rel="stylesheet" href="{% static 'assets/DataTables/cdn.datatables.net_buttons_2.4.2_css_buttons.dataTables.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/DataTables/cdn.datatables.net_1.13.7_css_jquery.dataTables.min.css' %}" />
+    <!-- end -->
     <link rel="stylesheet" href="{% static 'assets/default/css/style.css' %}">
 
-    <script src="{% static 'assets/default/js/jquery-3.6.0.min.js' %}"></script>
+    <!-- <script src="{% static 'assets/default/js/jquery-3.6.0.min.js' %}"></script> -->
+   
+    <!-- <script src="{% static 'assets/DataTables/datatables.min.js' %}"></script> -->
+    <script src="{% static 'assets/DataTables/code.jquery.com_jquery-3.7.0.js' %}"></script>
+    <script src="{% static 'assets/DataTables/cdn.datatables.net_1.13.7_js_jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/DataTables/cdn.datatables.net_buttons_2.4.2_js_dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/DataTables/cdnjs.cloudflare.com_ajax_libs_jszip_3.10.1_jszip.min.js' %}"></script>
+    <script src="{% static 'assets/DataTables/cdnjs.cloudflare.com_ajax_libs_pdfmake_0.1.53_pdfmake.min.js' %}"></script>
+    <script src="{% static 'assets/DataTables/cdnjs.cloudflare.com_ajax_libs_pdfmake_0.1.53_vfs_fonts.js' %}"></script>
+    <script src="{% static 'assets/DataTables/cdn.datatables.net_buttons_2.4.2_js_buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/DataTables/cdn.datatables.net_buttons_2.4.2_js_buttons.print.min.js' %}"></script>
+
+    <!-- end -->
     <script src="{% static 'assets/font-awesome/js/all.min.js' %}"></script>
     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'assets/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'assets/DataTables/datatables.min.js' %}"></script>
+    
     <script src="{% static 'assets/bootstrap/js/popper.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/mdb-blogtemplate/js/mdb.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/default/js/script.js' %}"></script>
+
+
     {% block headerContent %} {% endblock headerContent %}
 </head>
 

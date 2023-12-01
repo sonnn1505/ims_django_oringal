@@ -112,6 +112,10 @@
         .addClass('filters')
         .appendTo('#product-list thead');
         var table = $('#product-list').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
             pageLength:5,
             lengthMenu:[5,10,20,30,50,100],
             scrollX:true,

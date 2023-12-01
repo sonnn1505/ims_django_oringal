@@ -16,7 +16,12 @@ import base64
 import openpyxl
 import pandas as pd
 from django.shortcuts import render
-import numpy as np
+import datetime
+
+# import the logging library
+import logging
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 context = {
     'page_title' : 'File Management System',
@@ -36,10 +41,13 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 resp['status']='success'
+                logger.warning(str(datetime.datetime.now())+' Login success')
             else:
                 resp['msg'] = "Incorrect username or password"
+                logger.warning(str(datetime.datetime.now())+' Login Incorrect username or password')
         else:
             resp['msg'] = "Incorrect username or password"
+            logger.warning(str(datetime.datetime.now())+' Login Incorrect username or password')
     return HttpResponse(json.dumps(resp),content_type='application/json')
 
 #Logout
@@ -53,6 +61,7 @@ def home(request):
     context['categories'] = Category.objects.count()
     context['products'] = Product.objects.count()
     context['sales'] = Invoice.objects.count()
+    logger.warning(str(datetime.datetime.now())+' Home Accessed')
     return render(request, 'home.html',context)
 
 def registerUser(request):
@@ -125,7 +134,7 @@ def category_mgt(request):
     context['page_title'] = "Product Categories"
     categories = Category.objects.all()
     context['categories'] = categories
-
+    logger.warning(str(datetime.datetime.now())+' category Accessed')
     return render(request, 'category_mgt.html', context)
 
 @login_required
@@ -144,12 +153,15 @@ def save_category(request):
             form.save()
             messages.success(request, 'Category has been saved successfully.')
             resp['status'] = 'success'
+            logger.warning(str(datetime.datetime.now())+' save_category has been saved successfully.')
         else:
             for fields in form:
                 for error in fields.errors:
                     resp['msg'] += str(error + "<br>")
+                    logger.warning(str(datetime.datetime.now())+' save_category error form ' + str(error))
     else:
         resp['msg'] = 'No data has been sent.'
+        logger.warning(str(datetime.datetime.now())+' save_category No data has been sent. ')
     return HttpResponse(json.dumps(resp), content_type = 'application/json')
 
 @login_required
@@ -175,7 +187,7 @@ def delete_category(request):
             resp['status'] = 'success'
         except Exception as err:
             resp['msg'] = 'Category has failed to delete'
-            print(err)
+            logger.warning(str(datetime.datetime.now())+' delete_category ' + str(err))
 
     else:
         resp['msg'] = 'Category has failed to delete'
@@ -323,7 +335,7 @@ def delete_product(request):
             resp['status'] = 'success'
         except Exception as err:
             resp['msg'] = 'Product has failed to delete'
-            print(err)
+            logger.warning(str(datetime.datetime.now())+' delete_product No ' + str(err))
 
     else:
         resp['msg'] = 'Product has failed to delete'
@@ -408,7 +420,7 @@ def delete_stock(request):
             resp['status'] = 'success'
         except Exception as err:
             resp['msg'] = 'Stock has failed to delete'
-            print(err)
+            logger.warning(str(datetime.datetime.now())+' delete_stock ' + str(err))
 
     else:
         resp['msg'] = 'Stock has failed to delete'
@@ -554,13 +566,6 @@ def image_upload_view(request):
                 file = file
             )
             new_file.save()
-
-        # form = ImageForm(request.POST, request.FILES)
-        # if form.is_valid():
-        #     form.save()
-        #     # Get the current instance object to display in the template
-        #     img_obj = form.instance
-        #     # return render(request, 'manage_product_import_photos.html', {'form': form, 'img_obj': img_obj})
         return redirect('product-page')
     else:
         form = ImageForm()

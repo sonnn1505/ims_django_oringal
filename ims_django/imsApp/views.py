@@ -217,6 +217,11 @@ def save_product(request):
             form = SaveProduct(request.POST, instance= product)
         if form.is_valid():
             form.save()
+            # upload picture
+            file = request.FILES['picture_file']
+            new_file = Files(file = file)
+            new_file.save()
+            # upload picture
             messages.success(request, 'Product has been saved successfully.')
             resp['status'] = 'success'
         else:

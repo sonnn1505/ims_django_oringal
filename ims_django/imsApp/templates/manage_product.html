@@ -17,8 +17,8 @@
             </select>
         </div>
         <div class="form-group mb-3 ">
-            <label for="part_number" class="control-label">Product category</label>
-            <input type="text" class="form-control rounded-0" id="part_number" name="part_number" value="{{ product.product_category }}" >
+            <label for="product_category" class="control-label">Product category</label>
+            <input type="text" class="form-control rounded-0" id="product_category" name="product_category" value="{{ product.product_category }}" >
         </div>
         <div class="form-group mb-3 ">
             <label for="part_number" class="control-label">Part number</label>
@@ -34,16 +34,16 @@
         </div>
         <div class="form-group mb-3 ">
             <label for="drawing_no" class="control-label">Picture</label>
-            <!-- <input type="file" id="picture" name="picture" value="{{ product.picture}}" > -->
-            <input type="hidden" id="picture" name="picture" value="{{product.part_number}}.JPG">
+            <input type="hidden" id="picture" name="picture" value="{{ product.part_number}}.JPG" >
+            <input type="file" id="picture_file" name="picture_file">
         </div>
         <div class="form-group mb-3">
             <label for="description" class="control-label">Description</label>
             <textarea class="form-control rounded-0" name="description" id="description" rows="5" >{{ product.description }}</textarea>
         </div>
         <div class="form-group mb-3">
-            <label for="description" class="control-label">Description 2</label>
-            <textarea class="form-control rounded-0" name="description2" id="description2" rows="5" >{{ product.description2 }}</textarea>
+            <label for="description_2" class="control-label">Description 2</label>
+            <textarea class="form-control rounded-0" name="description_2" id="description_2" rows="5" >{{ product.description2 }}</textarea>
         </div>
         <div class="form-group mb-3">
             <label for="material" class="control-label">Material</label>

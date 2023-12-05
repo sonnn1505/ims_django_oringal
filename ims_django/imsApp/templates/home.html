@@ -56,8 +56,88 @@
             </div>
         </div>
     </div>
-    
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <canvas id="line_chart"></canvas>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <canvas id="bar_chart"></canvas>
+        </div>
+    </div>
 </section>
 
 
-</div> {% endblock pageContent %} 
+</div> {% endblock pageContent %} {% block ScriptBlock %}
+<script>
+    // line chart
+    let ctx = document.getElementById("line_chart").getContext("2d");
+    let chart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: ["Jan","Feb","March","April","May","Jun","July"],
+        datasets: [
+            {
+            label: "import",
+            backgroundColor: "#3399ff",
+            borderColor: "#3399ff",
+            data: [4463,2965,1996,4164,2211,4330,2630]
+            },
+            {
+            label: "export",
+            backgroundColor: "#ff6699",
+            borderColor: "#ff6699",
+            data: [4080,1068,1060,3419,4322,3847,4924]
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Inventory Chart By Month'
+            }
+        }
+    }
+    });
+
+    // area chart
+    let ctx_area = document.getElementById("bar_chart").getContext("2d");
+    let chart_area = new Chart(ctx_area, {
+    type: "bar",
+    data: {
+        labels: ["VTGC", "SPTC"],
+        datasets: [
+            {
+            label: "import",
+            backgroundColor: "#3399ff",
+            borderColor: "#3399ff",
+            data: [26900, 28700]
+            },
+            {
+            label: "export",
+            backgroundColor: "#ff6699",
+            borderColor: "#ff6699",
+            data: [16900, 18700]
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Inventory Chart By Category'
+            }
+        }
+    }
+    });
+</script>
+{% endblock ScriptBlock %}

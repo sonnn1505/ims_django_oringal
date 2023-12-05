@@ -30,7 +30,7 @@ class Product(models.Model):
     description         = models.TextField(blank=True)
     description_2       = models.TextField(max_length=100, blank=True, null=True)
     material            = models.CharField(max_length=100, blank=True, null=True)
-    demand_quantity     = models.IntegerField(blank=False, null=False, default=0)
+    demand_quantity     = models.IntegerField(default=0)
     Specification       = models.CharField(max_length=100, blank=True, null=True)
     color               = models.CharField(max_length=100, blank=True, null=True)
     standard            = models.CharField(max_length=100, blank=True, null=True)

@@ -17,6 +17,9 @@ import openpyxl
 import pandas as pd
 from django.shortcuts import render
 import datetime
+from django.http import JsonResponse
+from django.db.models import Count, F, Sum, Avg
+from django.db.models.functions import ExtractYear, ExtractMonth
 
 # import the logging library
 import logging
@@ -575,3 +578,85 @@ def image_upload_view(request):
     else:
         form = ImageForm()
         return render(request, 'manage_product_import_photos.html', {'form': form})
+
+# chart
+months = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+]
+colorPalette = ["#55efc4", "#81ecec", "#a29bfe", "#ffeaa7", "#fab1a0", "#ff7675", "#fd79a8"]
+colorPrimary, colorSuccess, colorDanger = "#79aec8", colorPalette[0], colorPalette[5]
+
+
+def get_year_dict():
+    year_dict = dict()
+
+    for month in months:
+        year_dict[month] = 0
+
+    return year_dict
+
+
+def generate_color_palette(amount):
+    palette = []
+
+    i = 0
+    while i < len(colorPalette) and len(palette) < amount:
+        palette.append(colorPalette[i])
+        i += 1
+        if i == len(colorPalette) and len(palette) < amount:
+            i = 0
+
+    return palette
+
+@login_required
+def get_filter_options(request):
+    stock_list = Stock.objects.annotate(year=ExtractYear("date_created")).values("year").order_by("-year").distinct()
+
+    options = [stock["year"] for stock in stock_list]
+
+    return JsonResponse({
+        "options": options,
+    })
+
+@login_required
+def get_inventory_by_year(request, year):
+
+    stocks = Stock.objects.filter(date_created__year = year)
+    grouped_stock_in = stocks.annotate(quantity_sum=F("quantity")).annotate(month=ExtractMonth("date_created"))\
+        .values("month").annotate(average=Sum("quantity")).values("month", "average").filter(type = '1').order_by("month")
+    
+    grouped_stock_out = stocks.annotate(quantity_sum=F("quantity")).annotate(month=ExtractMonth("date_created"))\
+        .values("month").annotate(average=Sum("quantity")).values("month", "average").filter(type = '2').order_by("month")
+    
+    stock_dict_in = get_year_dict()
+
+    for group in grouped_stock_in:
+        stock_dict_in[months[group["month"]-1]] = round(group["average"], 2)
+
+    stock_dict_out = get_year_dict()
+
+    for group in grouped_stock_out:
+        stock_dict_out[months[group["month"]-1]] = round(group["average"], 2)
+    
+    return JsonResponse({
+        "title": f"stock in {year}",
+        "data": {
+            "labels": list(stock_dict_in.keys()),
+            "datasets": [
+                {
+                "label": "Total Quantity Import",
+                "backgroundColor": colorSuccess,
+                "borderColor": colorSuccess,
+                "data": list(stock_dict_in.values()),
+                }
+                ,  {
+                "label":"Total Quantity Export",
+                "backgroundColor":colorDanger,
+                "borderColor": colorDanger,
+                "data": list(stock_dict_out.values()),
+                }
+            ]
+        },
+    })

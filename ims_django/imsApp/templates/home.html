@@ -58,6 +58,11 @@
     </div>
 
     <div class="row">
+        <form id="filterForm">
+            <label for="year">Choose a year:</label>
+            <select name="year" id="year"></select>
+            <input type="submit" value="Load" name="_load">
+        </form>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <canvas id="line_chart"></canvas>
         </div>
@@ -72,25 +77,8 @@
 <script>
     // line chart
     let ctx = document.getElementById("line_chart").getContext("2d");
-    let chart = new Chart(ctx, {
+    let line_chart = new Chart(ctx, {
     type: "line",
-    data: {
-        labels: ["Jan","Feb","March","April","May","Jun","July"],
-        datasets: [
-            {
-            label: "import",
-            backgroundColor: "#3399ff",
-            borderColor: "#3399ff",
-            data: [4463,2965,1996,4164,2211,4330,2630]
-            },
-            {
-            label: "export",
-            backgroundColor: "#ff6699",
-            borderColor: "#ff6699",
-            data: [4080,1068,1060,3419,4322,3847,4924]
-            }
-        ]
-    },
     options: {
         responsive: true,
         plugins: {
@@ -98,8 +86,8 @@
                 position: 'top',
             },
             title: {
-                display: true,
-                text: 'Inventory Chart By Month'
+                display: false,
+                text: ""
             }
         }
     }
@@ -139,5 +127,64 @@
         }
     }
     });
+    
+    // load chart
+    $(document).ready(function() {
+        $.ajax({
+        url: '{% url "chart-option" %}',
+        type: "GET",
+        dataType: "json",
+        success: (jsonResponse) => {
+            // Load all the options
+            jsonResponse.options.forEach(option => {
+            $("#year").append(new Option(option, option));
+            });
+            // Load data for the first option
+            loadAllCharts($("#year").children().first().val());
+        },
+        error: () => console.log("Failed to fetch chart filter options!")
+        });
+   });
+    $("#filterForm").on("submit", (event) => {
+        event.preventDefault();
+
+        const year = $("#year").val();
+        loadAllCharts(year)
+    });
+    function loadChart(chart, endpoint) {
+        $.ajax({
+        url: endpoint,
+        type: "GET",
+        dataType: "json",
+        success: (jsonResponse) => {
+            // Extract data from the response
+            const title = jsonResponse.title;
+            const labels = jsonResponse.data.labels;
+            const datasets = jsonResponse.data.datasets;
+
+            // Reset the current chart
+            chart.data.datasets = [];
+            chart.data.labels = [];
+
+            // Load new data into the chart
+            chart.options.plugins.title.text = title;
+            chart.options.plugins.title.display = true;
+            chart.data.labels = labels;
+            datasets.forEach(dataset => {
+            chart.data.datasets.push(dataset);
+            debugger
+            });
+            chart.update();
+        },
+        error: () => console.log("Failed to fetch chart data from " + endpoint + "!")
+        });
+  }
+
+  function loadAllCharts(year) {
+    loadChart(line_chart, `/chart-line-inventory/${year}/`);
+    // loadChart(spendPerCustomerChart, `/shop/chart/spend-per-customer/${year}/`);
+    // loadChart(paymentSuccessChart, `/shop/chart/payment-success/${year}/`);
+    // loadChart(paymentMethodChart, `/shop/chart/payment-method/${year}/`);
+  }
 </script>
 {% endblock ScriptBlock %}

@@ -621,7 +621,7 @@ def get_filter_options(request):
     })
 
 @login_required
-def get_inventory_by_year(request, year):
+def get_inventory_line_year(request, year):
 
     stocks = Stock.objects.filter(date_created__year = year)
     grouped_stock_in = stocks.annotate(quantity_sum=F("quantity")).annotate(month=ExtractMonth("date_created"))\
@@ -658,5 +658,29 @@ def get_inventory_by_year(request, year):
                 "data": list(stock_dict_out.values()),
                 }
             ]
+        },
+    })
+
+@login_required
+def get_inventory_pie_year(request, year):
+
+    stock = Stock.objects.filter(date_created__year=year)
+
+    sum_stock_in = stock.filter(type='1').aggregate(Sum('quantity'))['quantity__sum']
+    sum_stock_out = stock.filter(type='2').aggregate(Sum('quantity'))['quantity__sum']
+
+    return JsonResponse({
+        "title": f"Inventory in {year}",
+        "data": {
+            "labels": ["Import", "Export"],
+            "datasets": [{
+                "label": "Total Quantity Import",
+                "backgroundColor": [colorSuccess, colorDanger],
+                "borderColor": [colorSuccess, colorDanger],
+                "data": [
+                    sum_stock_in,
+                    sum_stock_out,
+                ],
+            }]
         },
     })

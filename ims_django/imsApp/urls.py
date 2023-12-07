@@ -44,6 +44,7 @@ urlpatterns = [
     path('delete_invoice',views.delete_invoice,name='delete-invoice'),
     path('upload', views.image_upload_view, name='upload'),
     path('chart_option', views.get_filter_options, name='chart-option'),
-    path('chart-line-inventory/<int:year>/', views.get_inventory_by_year, name='chart-line-inventory'),
+    path('chart-line-inventory/<int:year>/', views.get_inventory_line_year, name='chart-line-inventory'),
+    path('chart-pie-inventory/<int:year>/', views.get_inventory_pie_year, name='chart-pie-inventory'),
 
 ]

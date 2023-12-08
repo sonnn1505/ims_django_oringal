@@ -64,17 +64,39 @@ class Product(models.Model):
     def __str__(self):
         return self.part_number + ' - ' + self.description
 
+    
     def count_inventory(self):
-        stocks = Stock.objects.filter(product = self)
-        stockIn = 0
-        stockOut = 0
-        for stock in stocks:
-            if stock.type == '1':
-                stockIn = int(stockIn) + int(stock.quantity)
-            else:
-                stockOut = int(stockOut) + int(stock.quantity)
-        available  = stockIn - stockOut
-        return available
+        # wh_code = Warehouse.objects.values("code")
+        # wh_dict = [wh["code"] for wh in wh_code]
+        whs = Warehouse.objects.all()
+        
+        inventory_by_warehouse = ""
+        for wh in whs:
+            stocks = Stock.objects.filter(product = self, warehouse = wh)
+            stockIn = 0
+            stockOut = 0
+            for stock in stocks:
+                if stock.type == '1':
+                    stockIn = int(stockIn) + int(stock.quantity)
+                else:
+                    stockOut = int(stockOut) + int(stock.quantity)
+    
+            available  = stockIn - stockOut
+            inventory_by_warehouse += '/ ' + wh.code +': ' + str(available)
+        return inventory_by_warehouse
+    
+        # stocks = Stock.objects.filter(product = self)
+        # stockIn = 0
+        # stockOut = 0
+        # for stock in stocks:
+        #     wh = stock.warehouse.name
+        #     if stock.type == '1':
+        #         stockIn = int(stockIn) + int(stock.quantity)
+        #     else:
+        #         stockOut = int(stockOut) + int(stock.quantity)
+        # available  = stockIn - stockOut
+        # return available
+
 
 class Stock(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -115,7 +137,7 @@ class Invoice_Item(models.Model):
 
 @receiver(models.signals.post_save, sender=Invoice_Item, )
 def stock_update(sender, instance, **kwargs):
-    stock = Stock(product = instance.product, quantity = instance.quantity, type = instance.invoice.type)
+    stock = Stock(product = instance.product, quantity = instance.quantity, type = instance.invoice.type, warehouse = instance.warehouse)
     stock.save()
     # stockID = Stock.objects.last().id
     Invoice_Item.objects.filter(id= instance.id).update(stock=stock)

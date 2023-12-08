@@ -20,6 +20,15 @@
                                 <input type="hidden" id="type" name="type" class="form-control rounded-0" value="1">
                             </div>
                         </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <label for="warehouse" class="control-label">Warehouse</label>
+                            <select type="text" id="warehouse" class="form-control rounded-0">
+                                <option value="" selected="selected" disabled="disabled"></option>
+                                {% for warehouse in warehouses %}
+                                    <option value="{{ warehouse.id }}">{{ warehouse.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                     <hr>
                     <fieldset>
@@ -81,6 +90,7 @@
     <tr class="item">
         <td class="align-middle text-center px-2 py-1">
             <input type="hidden" name="pid[]" values="">
+            <input type="hidden" name="warehouse[]" values="">
             <input type="hidden" class="input-price" name="price[]" values="">
             <button class="btn btn-outline-danger btn-sm rem-item" type="button"><i class="fa fa-times"></i></button>
         </td>
@@ -112,8 +122,13 @@
             placeholder: 'Please Select Product here',
             width: "100%"
         })
+        $('#warehouse').select2({
+            placeholder: 'Please Select warehouse to import here',
+            width: "100%"
+        })
 
         $('#add_to_list').click(function() {
+            warehouse_id = $('#warehouse').val();
             pid = $('#pid').val()
             if (pid == '' || pid == null) {
                 return false;
@@ -136,6 +151,7 @@
                             var tr = $($('noscript#prod-item-clone').html()).clone()
                             tr.attr('data-id', data.id)
                             tr.find('input[name="pid[]"]').val(data.id)
+                            tr.find('input[name="warehouse[]"]').val(warehouse_id)
                             tr.find('input[name="price[]"]').val(data.price)
                             tr.find('.product_name').text(data.product)
                             tr.find('.product_price').text(parseFloat(data.price).toLocaleString('en-US'))

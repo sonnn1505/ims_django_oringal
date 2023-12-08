@@ -457,6 +457,8 @@ def buy_mgt(request):
     context['page_title'] = 'Buy'
     products = Product.objects.filter(status = 1).all()
     context['products'] = products
+    warehouse = Warehouse.objects.all()
+    context['warehouses'] = warehouse
     return render(request,'buy.html', context)
 
 
@@ -478,6 +480,7 @@ def save_buy(request):
     id = 2
     if request.method == 'POST':
         pids = request.POST.getlist('pid[]')
+        wh = request.POST.get('warehouse[]')[0]
         invoice_form = SaveInvoice(request.POST)
         if invoice_form.is_valid():
             invoice_form.save()
@@ -488,6 +491,7 @@ def save_buy(request):
                     'product':pid,
                     'quantity':request.POST['quantity['+str(pid)+']'],
                     'price':request.POST['price['+str(pid)+']'],
+                    'warehouse':wh
                 }
                 print(data)
                 ii_form = SaveInvoiceItem(data=data)

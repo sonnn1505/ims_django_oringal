@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm, UserC
 
 from django.contrib.auth.models import User
 from more_itertools import quantify
-from .models import Category, Product, Stock, Invoice, Invoice_Item, Image
+from .models import Category, Product, Stock, Invoice, Invoice_Item, Image, Warehouse
 from datetime import datetime
 
 class UserRegistration(UserCreationForm):
@@ -224,10 +224,11 @@ class SaveInvoiceItem(forms.ModelForm):
     product = forms.CharField(max_length=30)
     quantity = forms.CharField(max_length=100)
     price = forms.CharField(max_length=100)
+    warehouse = forms.CharField(max_length=30)
 
     class Meta:
         model = Invoice_Item
-        fields = ('invoice','product','quantity','price')
+        fields = ('invoice','product','quantity','price','warehouse')
 
     def clean_invoice(self):
         iid = self.cleaned_data['invoice']
@@ -250,6 +251,14 @@ class SaveInvoiceItem(forms.ModelForm):
         if qty.isnumeric():
             return int(qty)
         raise forms.ValidationError("Quantity is not valid")
+    
+    def clean_warehouse(self):
+        pid = self.cleaned_data['warehouse']
+        try:
+            warehouse = Warehouse.objects.get(id=pid)
+            return warehouse
+        except:
+            raise forms.ValidationError("Warhouse is not valid")
     
 
 class ImageForm(forms.ModelForm):

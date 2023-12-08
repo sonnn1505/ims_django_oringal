@@ -46,5 +46,6 @@ urlpatterns = [
     path('chart_option', views.get_filter_options, name='chart-option'),
     path('chart-line-inventory/<int:year>/', views.get_inventory_line_year, name='chart-line-inventory'),
     path('chart-pie-inventory/<int:year>/', views.get_inventory_pie_year, name='chart-pie-inventory'),
+    path('warehouse_page', views.warehouse_mgt, name='warehouse-page'),
 
 ]

@@ -86,10 +86,23 @@ class Invoice(models.Model):
     def item_count(self):
         return Invoice_Item.objects.filter(invoice = self).aggregate(Sum('quantity'))['quantity__sum']
 
+class Warehouse(models.Model):
+    code = models.CharField(max_length=100)
+    name = models.CharField(max_length=250)
+    address = models.CharField(max_length=400)
+    manager = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=10)
+    status = models.CharField(max_length=2, choices=(('1','Active'),('2','Inactive')), default=1)
+    date_created = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.code
 class Invoice_Item(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE, blank= True, null= True)
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, blank=True, null=True)
     price = models.FloatField(default=0)
     quantity = models.FloatField(default=0)
 
@@ -119,3 +132,5 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images')
     def __str__(self):
         return self.title
+
+

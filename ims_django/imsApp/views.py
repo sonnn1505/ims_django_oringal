@@ -131,6 +131,15 @@ def profile(request):
     return render(request, 'profile.html',context)
 
 
+# WareHouse
+@login_required
+def warehouse_mgt(request):
+    context['page_title'] = "Warehouse"
+    warehouse = Warehouse.objects.all()
+    context['warehouse'] = warehouse
+    logger.warning(str(datetime.datetime.now())+' warehouse Accessed')
+    return render(request, 'warehouse_mgt.html', context)
+
 # Category
 @login_required
 def category_mgt(request):

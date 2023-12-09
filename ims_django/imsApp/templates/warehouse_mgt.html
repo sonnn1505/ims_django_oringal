@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
             <div class="container-fluid">
-                <table class="table table-bordered" id="category-list">
+                <table class="table table-bordered" id="warehouse-list">
                     <thead>
                         <tr class="bg-gradient bg-primary bg-opacity-50 text-light">
                             <th class="px-2 py-2 text-center">#</th>
@@ -41,10 +41,10 @@
                                 <span class="badge bg-secondary bg-gradient rounded-pill px-2">Inactive</span> {% endif %}
                             </td>
                             <td class="px-2 py-1 align-middle text-center">
-                                <a class="btn btn-outline-primary btn-sm edit-data" href="javascript:void(0)" data-id="{{ category.pk }}" title="Edit">
+                                <a class="btn btn-outline-primary btn-sm edit-data" href="javascript:void(0)" data-id="{{ warehouse.pk }}" title="Edit">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm delete-data" type="button" data-id="{{ category.pk }}" title="Delete">
+                                <button class="btn btn-outline-danger btn-sm delete-data" type="button" data-id="{{ warehouse.pk }}" title="Delete">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>
@@ -60,16 +60,16 @@
 <script>
     $(function() {
         $('#add_new').click(function() {
-            uni_modal('<i class="fa fa-plus"></i> Add Category', '{% url "manage-category" %}', 'modal-md')
+            uni_modal('<i class="fa fa-plus"></i> Add Warehouse', '{% url "manage-warehouse" %}', 'modal-md')
         })
         $('.edit-data').click(function() {
-            uni_modal('<i class="fa fa-edit"></i> Edit Category', '{% url "manage-category" %}/' + $(this).attr('data-id'), 'modal-md')
+            uni_modal('<i class="fa fa-edit"></i> Edit Warehouse', '{% url "manage-warehouse" %}/' + $(this).attr('data-id'), 'modal-md')
         })
         $('.delete-data').click(function() {
-            _conf("Are you sure to delete this Category permanently?", "delete_category", [$(this).attr('data-id')])
+            _conf("Are you sure to delete this Warehouse permanently?", "delete_warehouse", [$(this).attr('data-id')])
         })
 
-        $('#category-list').DataTable({
+        $('#warehouse-list').DataTable({
             columnDefs: [{
                 orderable: false,
                 targets: 5
@@ -83,7 +83,7 @@
         })
     })
 
-    function delete_category($id) {
+    function delete_warehouse($id) {
         start_loader();
         var _this = $(this)
         $('.err-msg').remove();
@@ -91,7 +91,7 @@
         el.addClass("alert alert-danger err-msg")
         el.hide()
         $.ajax({
-            url: '{% url "delete-category" %}',
+            url: '{% url "delete-warehouse" %}',
             headers: {
                 'X-CSRFToken': "{{csrf_token}}"
             },

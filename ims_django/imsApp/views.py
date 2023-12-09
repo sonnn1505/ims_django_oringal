@@ -8,7 +8,7 @@ import json
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from imsApp.forms import SaveStock, UserRegistration, UpdateProfile, UpdatePasswords, SaveCategory, SaveProduct, SaveInvoice, SaveInvoiceItem, ImageForm
+from imsApp.forms import *
 from imsApp.models import *
 from cryptography.fernet import Fernet
 from django.conf import settings
@@ -177,6 +177,53 @@ def save_category(request):
     return HttpResponse(json.dumps(resp), content_type = 'application/json')
 
 @login_required
+def save_warehouse(request):
+    resp = {'status':'failed','msg':''}
+    if request.method == 'POST':
+        if (request.POST['id']).isnumeric():
+            warehouse = Warehouse.objects.get(pk=request.POST['id'])
+        else:
+            warehouse = None
+        if warehouse is None:
+            form = SaveWarehouse(request.POST)
+        else:
+            form = SaveWarehouse(request.POST, instance= warehouse)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Warehouse has been saved successfully.')
+            resp['status'] = 'success'
+            logger.warning(str(datetime.datetime.now())+' save warehouse has been saved successfully.')
+        else:
+            for fields in form:
+                for error in fields.errors:
+                    resp['msg'] += str(error + "<br>")
+                    logger.warning(str(datetime.datetime.now())+' save warehouse error form ' + str(error))
+    else:
+        resp['msg'] = 'No data has been sent.'
+        logger.warning(str(datetime.datetime.now())+' save warehouse No data has been sent. ')
+    return HttpResponse(json.dumps(resp), content_type = 'application/json')
+
+@login_required
+def delete_warehouse(request):
+    resp = {'status':'failed', 'msg':''}
+
+    if request.method == 'POST':
+        try:
+            warehouse = Warehouse.objects.get(id = request.POST['id'])
+            warehouse.delete()
+            messages.success(request, 'Warehouse has been deleted successfully')
+            resp['status'] = 'success'
+        except Exception as err:
+            resp['msg'] = 'Warehouse has failed to delete'
+            logger.warning(str(datetime.datetime.now())+' delete warehouse ' + str(err))
+
+    else:
+        resp['msg'] = 'Category has failed to delete'
+    
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+@login_required
 def manage_category(request, pk=None):
     context['page_title'] = "Manage Category"
     if not pk is None:
@@ -186,6 +233,18 @@ def manage_category(request, pk=None):
         context['category'] = {}
 
     return render(request, 'manage_category.html', context)
+
+@login_required
+def manage_warehouse(request, pk=None):
+    context['page_title'] = "Manage Warehouse"
+    if not pk is None:
+        warehouse = Warehouse.objects.get(id = pk)
+        context['warehouse'] = warehouse
+    else:
+        context['warehouse'] = {}
+
+    return render(request, 'manage_warehouse.html', context)
+
 
 @login_required
 def delete_category(request):
@@ -450,6 +509,8 @@ def sales_mgt(request):
     context['page_title'] = 'Sales'
     products = Product.objects.filter(status = 1).all()
     context['products'] = products
+    warehouse = Warehouse.objects.all()
+    context['warehouses'] = warehouse
     return render(request,'sales.html', context)
 
 @login_required
@@ -519,6 +580,7 @@ def save_sales(request):
     id = 2
     if request.method == 'POST':
         pids = request.POST.getlist('pid[]')
+        wh = request.POST.get('warehouse[]')[0]
         invoice_form = SaveInvoice(request.POST)
         if invoice_form.is_valid():
             invoice_form.save()
@@ -529,6 +591,7 @@ def save_sales(request):
                     'product':pid,
                     'quantity':request.POST['quantity['+str(pid)+']'],
                     'price':request.POST['price['+str(pid)+']'],
+                    'warehouse':wh
                 }
                 print(data)
                 ii_form = SaveInvoiceItem(data=data)

@@ -96,6 +96,34 @@ class SaveCategory(forms.ModelForm):
             # raise forms.ValidationError(f"{name} Category Already Exists.")
         raise forms.ValidationError(f"{name} Category Already Exists.")
 
+class SaveWarehouse(forms.ModelForm):
+    code = forms.CharField(max_length="250")
+    name = forms.CharField(max_length="250")
+    address = forms.CharField(max_length="250")
+    manager = forms.CharField(max_length="250")
+    phone = forms.CharField(max_length="250")
+    status = forms.ChoiceField(choices=[('1','Active'),('2','Inactive')])
+
+    class Meta:
+        model = Warehouse
+        fields = ('code','name','address','manager','phone')
+
+    def clean_code(self):
+        id = self.instance.id if self.instance.id else 0
+        code = self.cleaned_data['code']
+        # print(int(id) > 0)
+        # raise forms.ValidationError(f"{name} Category Already Exists.")
+        try:
+            if int(id) > 0:
+                warehouse = Warehouse.objects.exclude(id=id).get(code = code)
+            else:
+                warehouse = Warehouse.objects.get(code = code)
+        except:
+            return code
+            # raise forms.ValidationError(f"{name} Category Already Exists.")
+        raise forms.ValidationError(f"{code} Warehouse Already Exists.")
+
+
 class SaveProduct(forms.ModelForm):
     name = forms.CharField(max_length="250", required= False)
     

@@ -47,5 +47,9 @@ urlpatterns = [
     path('chart-line-inventory/<int:year>/', views.get_inventory_line_year, name='chart-line-inventory'),
     path('chart-pie-inventory/<int:year>/', views.get_inventory_pie_year, name='chart-pie-inventory'),
     path('warehouse_page', views.warehouse_mgt, name='warehouse-page'),
+    path('manage_warehouse',views.manage_warehouse,name='manage-warehouse'),
+    path('save_warehouse',views.save_warehouse,name='save-warehouse'),
+    path('manage_warehouse/<int:pk>',views.manage_warehouse,name='manage-warehouse-pk'),
+    path('delete_warehouse',views.delete_warehouse,name='delete-warehouse'),
 
 ]
